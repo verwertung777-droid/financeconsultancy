@@ -2,6 +2,8 @@
 
 A single-file static landing page for an investment strategy consultancy. No build step, no bundler, no dependencies — just open `index.html` in a browser.
 
+![Homepage screenshot](screenshot-homepage.png)
+
 ## Running locally
 
 ```

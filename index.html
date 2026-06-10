@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Investment Strategy Consultation</title>
+  <meta name="description" content="Professional investment strategy consultation and portfolio planning services.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0F172A;
+      --secondary: #10B981;
+      --accent: #F59E0B;
+      --background: #FFFFFF;
+      --text: #1F2937;
+      --light-bg: #F8FAFC;
+      --border: #E2E8F0;
+      --shadow: 0 4px 6px -1px rgba(0,0,0,0.08), 0 2px 4px -1px rgba(0,0,0,0.04);
+      --shadow-lg: 0 10px 25px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; color: var(--text); background: var(--background); line-height: 1.6; }
+    h1, h2, h3, h4 { font-family: 'Playfair Display', serif; line-height: 1.2; }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+    section { padding: 5rem 0; }
+
+    .section-label {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--secondary);
+      margin-bottom: 0.75rem;
+    }
+    .section-heading { text-align: center; margin-bottom: 3rem; }
+    .section-heading h2 { font-size: clamp(1.8rem, 3vw, 2.6rem); color: var(--primary); margin-bottom: 0.75rem; }
+    .section-heading p { color: #64748B; font-size: 1.025rem; max-width: 580px; margin: 0 auto; }
+
+    /* Buttons */
+    .btn {
+      display: inline-block;
+      padding: 0.85rem 1.75rem;
+      border-radius: 6px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.925rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.22s ease;
+      line-height: 1;
+    }
+    .btn-primary { background: var(--secondary); color: #fff; }
+    .btn-primary:hover { background: #059669; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(16,185,129,0.3); }
+    .btn-secondary { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,0.65); }
+    .btn-secondary:hover { background: rgba(255,255,255,0.1); border-color: #fff; }
+    .btn-accent { background: var(--accent); color: var(--primary); }
+    .btn-accent:hover { background: #D97706; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(245,158,11,0.3); }
+    .btn-outline-white { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,0.5); }
+    .btn-outline-white:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.8); }
+
+    /* Scroll animations */
+    .animate { opacity: 0; transform: translateY(36px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .animate.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 1rem 0;
+      transition: background 0.3s, padding 0.3s, box-shadow 0.3s;
+    }
+    nav.scrolled { background: var(--primary); padding: 0.55rem 0; box-shadow: 0 2px 24px rgba(0,0,0,0.35); }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+    .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: #fff; }
+    .nav-logo span { color: var(--secondary); }
+    .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+    .nav-links a { color: rgba(255,255,255,0.82); font-size: 0.88rem; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--secondary); }
+    .nav-links .btn { padding: 0.5rem 1.2rem; font-size: 0.83rem; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: #fff; border-radius: 2px; transition: all 0.3s; }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    @media (max-width: 768px) {
+      .hamburger { display: flex; }
+      .nav-links {
+        position: absolute; top: 100%; left: 0; right: 0;
+        background: var(--primary); flex-direction: column;
+        padding: 1.5rem; gap: 1rem; display: none;
+        border-top: 1px solid rgba(255,255,255,0.08);
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a { font-size: 1rem; }
+    }
+
+    /* ── HERO ── */
+    #hero {
+      position: relative; min-height: 100vh; display: flex; align-items: center;
+      background: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80&auto=format&fit=crop') center/cover no-repeat;
+      padding: 0;
+    }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(15,23,42,0.93) 0%, rgba(15,23,42,0.72) 100%); }
+    .hero-content { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 8rem 1.5rem 4rem; }
+    .hero-content h1 { font-size: clamp(2.2rem, 4.5vw, 3.75rem); color: #fff; margin-bottom: 1.2rem; max-width: 780px; }
+    .hero-content h1 span { color: var(--secondary); }
+    .hero-content > p { font-size: 1.1rem; color: rgba(255,255,255,0.78); max-width: 620px; margin-bottom: 2.25rem; line-height: 1.75; }
+    .hero-cta { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 3rem; }
+    .trust-badges { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+    .badge {
+      display: flex; align-items: center; gap: 0.45rem;
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 50px; padding: 0.4rem 0.95rem;
+      color: rgba(255,255,255,0.88); font-size: 0.8rem; font-weight: 500;
+      backdrop-filter: blur(6px);
+    }
+
+    @keyframes fadeInUp { from { opacity:0; transform: translateY(28px); } to { opacity:1; transform: translateY(0); } }
+    .hero-content .section-label { animation: fadeInUp 0.55s ease 0.1s both; }
+    .hero-content h1               { animation: fadeInUp 0.55s ease 0.25s both; }
+    .hero-content > p              { animation: fadeInUp 0.55s ease 0.4s both; }
+    .hero-cta                      { animation: fadeInUp 0.55s ease 0.52s both; }
+    .trust-badges                  { animation: fadeInUp 0.55s ease 0.65s both; }
+
+    /* ── WHY CHOOSE US ── */
+    #why { background: var(--light-bg); }
+    .cards-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+    .card {
+      background: #fff; border-radius: 12px; padding: 1.85rem; border: 1px solid var(--border);
+      box-shadow: var(--shadow); transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+    .card-icon {
+      width: 50px; height: 50px; border-radius: 10px;
+      background: rgba(16,185,129,0.1); display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1.15rem;
+    }
+    .card h3 { font-size: 1.05rem; color: var(--primary); margin-bottom: 0.5rem; }
+    .card p { font-size: 0.89rem; color: #64748B; line-height: 1.65; }
+
+    @media (max-width: 900px)  { .cards-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 480px)  { .cards-grid { grid-template-columns: 1fr; } }
+
+    /* ── PROCESS ── */
+    #process { background: var(--background); }
+    .timeline { display: flex; gap: 0; position: relative; margin-top: 3rem; }
+    .timeline::before {
+      content: ''; position: absolute; top: 31px;
+      left: calc(12.5% + 31px); right: calc(12.5% + 31px);
+      height: 2px; background: linear-gradient(to right, var(--secondary), var(--accent));
+    }
+    .timeline-step { flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 0 0.85rem; }
+    .step-num {
+      width: 62px; height: 62px; border-radius: 50%; background: var(--secondary);
+      color: #fff; font-family: 'Playfair Display', serif; font-size: 1.45rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; z-index: 1; margin-bottom: 1.2rem; flex-shrink: 0;
+      box-shadow: 0 0 0 6px rgba(16,185,129,0.13);
+    }
+    .timeline-step:nth-child(2) .step-num { background: #3B82F6; box-shadow: 0 0 0 6px rgba(59,130,246,0.13); }
+    .timeline-step:nth-child(3) .step-num { background: var(--accent); box-shadow: 0 0 0 6px rgba(245,158,11,0.13); }
+    .timeline-step:nth-child(4) .step-num { background: #7C3AED; box-shadow: 0 0 0 6px rgba(124,58,237,0.13); }
+    .timeline-step h3 { font-size: 0.98rem; color: var(--primary); margin-bottom: 0.45rem; }
+    .timeline-step p  { font-size: 0.845rem; color: #64748B; line-height: 1.6; }
+
+    @media (max-width: 768px) {
+      .timeline { flex-direction: column; gap: 1.25rem; }
+      .timeline::before { display: none; }
+      .timeline-step {
+        flex-direction: row; text-align: left; gap: 1.15rem;
+        background: var(--light-bg); border-radius: 12px; padding: 1.4rem;
+        box-shadow: var(--shadow);
+      }
+      .timeline-step > div { flex: 1; }
+      .step-num { width: 50px; height: 50px; font-size: 1.2rem; margin-bottom: 0; flex-shrink: 0; }
+    }
+
+    /* ── TESTIMONIALS ── */
+    #testimonials { background: var(--light-bg); }
+    .testimonials-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+    .t-card {
+      background: #fff; border-radius: 12px; padding: 2rem;
+      border: 1px solid var(--border); box-shadow: var(--shadow); position: relative;
+    }
+    .t-card::before {
+      content: '\201C'; font-family: 'Playfair Display', serif; font-size: 5rem;
+      color: var(--secondary); opacity: 0.12; position: absolute; top: -0.4rem; left: 1.2rem; line-height: 1;
+    }
+    .stars { color: var(--accent); font-size: 1rem; letter-spacing: 2px; margin-bottom: 0.85rem; }
+    .t-card blockquote { font-size: 0.92rem; color: #374151; line-height: 1.72; margin-bottom: 1.4rem; font-style: italic; }
+    .t-author { display: flex; align-items: center; gap: 0.8rem; }
+    .avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--secondary); color: #fff; font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .t-author strong { display: block; font-size: 0.88rem; color: var(--primary); }
+    .t-author span   { font-size: 0.78rem; color: #94A3B8; }
+
+    @media (max-width: 768px) { .testimonials-grid { grid-template-columns: 1fr; } }
+
+    /* ── LEAD MAGNET ── */
+    #lead-magnet { background: var(--primary); padding: 5rem 0; }
+    .lm-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .lm-content h2 { font-size: clamp(1.7rem, 2.5vw, 2.4rem); color: #fff; margin-bottom: 1rem; }
+    .lm-content > p { color: rgba(255,255,255,0.68); margin-bottom: 1.75rem; }
+    .checklist { list-style: none; margin-bottom: 2rem; }
+    .checklist li { display: flex; align-items: flex-start; gap: 0.7rem; color: rgba(255,255,255,0.83); font-size: 0.93rem; margin-bottom: 0.8rem; }
+    .checklist li svg { flex-shrink: 0; margin-top: 2px; }
+    .lm-visual {
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px; padding: 2.5rem; display: flex; flex-direction: column; align-items: center; text-align: center;
+    }
+    .lm-icon { width: 76px; height: 76px; border-radius: 50%; background: rgba(16,185,129,0.13); border: 2px solid var(--secondary); display: flex; align-items: center; justify-content: center; margin-bottom: 1.4rem; }
+    .value-tag { background: var(--accent); color: var(--primary); font-weight: 700; font-size: 0.78rem; padding: 0.28rem 1rem; border-radius: 50px; margin-bottom: 1.2rem; }
+    .lm-visual h3 { color: #fff; font-size: 1.25rem; margin-bottom: 0.45rem; }
+    .lm-visual p  { color: rgba(255,255,255,0.55); font-size: 0.86rem; margin-bottom: 1.75rem; }
+
+    @media (max-width: 768px) { .lm-inner { grid-template-columns: 1fr; gap: 2.5rem; } }
+
+    /* ── ENQUIRY FORM ── */
+    #enquiry { background: var(--light-bg); }
+    .form-wrap { max-width: 760px; margin: 0 auto; background: #fff; border-radius: 16px; padding: 3rem; box-shadow: var(--shadow-lg); border: 1px solid var(--border); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+    .form-group { margin-bottom: 1.2rem; }
+    .form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--primary); margin-bottom: 0.38rem; }
+    .form-group label span { color: #EF4444; margin-left: 2px; }
+    .form-control {
+      width: 100%; padding: 0.72rem 1rem; border: 1.5px solid var(--border);
+      border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 0.88rem;
+      color: var(--text); background: #fff; outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-control:focus { border-color: var(--secondary); box-shadow: 0 0 0 3px rgba(16,185,129,0.11); }
+    .form-control.error { border-color: #EF4444; }
+    .form-control::placeholder { color: #94A3B8; }
+    textarea.form-control { resize: vertical; min-height: 115px; }
+    .field-error { display: none; color: #EF4444; font-size: 0.76rem; margin-top: 0.3rem; }
+    .field-error.show { display: block; }
+    .form-msg { display: none; padding: 0.9rem 1.15rem; border-radius: 8px; margin-bottom: 1.5rem; font-size: 0.88rem; font-weight: 500; }
+    .form-msg.success { display: block; background: rgba(16,185,129,0.09); border: 1px solid var(--secondary); color: #065F46; }
+    .form-msg.err     { display: block; background: rgba(239,68,68,0.08); border: 1px solid #EF4444; color: #991B1B; }
+    .submit-btn { width: 100%; padding: 1rem; font-size: 1rem; border-radius: 8px; margin-top: 0.4rem; }
+    .form-note { text-align: center; font-size: 0.75rem; color: #94A3B8; margin-top: 0.85rem; }
+
+    @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } .form-wrap { padding: 2rem 1.25rem; } }
+
+    /* ── FAQ ── */
+    #faq { background: var(--background); }
+    .faq-list { max-width: 760px; margin: 0 auto; }
+    .faq-item { border: 1px solid var(--border); border-radius: 10px; margin-bottom: 0.8rem; background: #fff; box-shadow: var(--shadow); overflow: hidden; }
+    .faq-btn {
+      width: 100%; background: none; border: none; padding: 1.15rem 1.4rem;
+      display: flex; align-items: center; justify-content: space-between;
+      cursor: pointer; text-align: left; font-family: 'Inter', sans-serif;
+      font-size: 0.95rem; font-weight: 600; color: var(--primary); transition: background 0.2s;
+    }
+    .faq-btn:hover { background: var(--light-bg); }
+    .faq-btn[aria-expanded="true"] { color: var(--secondary); }
+    .faq-icon {
+      flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%;
+      border: 2px solid var(--border); display: flex; align-items: center; justify-content: center;
+      transition: transform 0.3s, background 0.3s, border-color 0.3s;
+    }
+    .faq-btn[aria-expanded="true"] .faq-icon { transform: rotate(45deg); background: var(--secondary); border-color: var(--secondary); }
+    .faq-btn[aria-expanded="true"] .faq-icon svg { stroke: #fff; }
+    .faq-ans { max-height: 0; overflow: hidden; transition: max-height 0.38s ease, padding 0.3s ease; padding: 0 1.4rem; }
+    .faq-ans.open { max-height: 300px; padding: 0 1.4rem 1.2rem; }
+    .faq-ans p { font-size: 0.9rem; color: #64748B; line-height: 1.72; }
+
+    /* ── FINAL CTA ── */
+    #final-cta { background: linear-gradient(135deg, var(--primary) 0%, #1a3356 100%); padding: 6rem 0; text-align: center; }
+    #final-cta h2 { font-size: clamp(1.8rem, 3.5vw, 3rem); color: #fff; margin-bottom: 1rem; }
+    #final-cta p  { color: rgba(255,255,255,0.72); font-size: 1.05rem; max-width: 540px; margin: 0 auto 2.25rem; }
+
+    /* ── FOOTER ── */
+    footer { background: #060D1A; color: rgba(255,255,255,0.65); padding: 3.5rem 0 1.5rem; }
+    .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 3rem; padding-bottom: 2.5rem; border-bottom: 1px solid rgba(255,255,255,0.07); margin-bottom: 2rem; }
+    .footer-brand p { font-size: 0.85rem; line-height: 1.72; color: rgba(255,255,255,0.45); margin: 0.7rem 0 1.2rem; }
+    .social-links { display: flex; gap: 0.65rem; }
+    .social-link { width: 36px; height: 36px; border-radius: 8px; background: rgba(255,255,255,0.07); display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+    .social-link:hover { background: var(--secondary); }
+    .footer-col h4 { font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 1rem; }
+    .footer-col p { font-size: 0.84rem; margin-bottom: 0.5rem; }
+    .footer-col a { color: rgba(255,255,255,0.65); transition: color 0.2s; }
+    .footer-col a:hover { color: var(--secondary); }
+    .footer-bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.75rem; font-size: 0.76rem; color: rgba(255,255,255,0.3); }
+    .disclaimer { font-size: 0.73rem; color: rgba(255,255,255,0.28); margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.06); line-height: 1.65; }
+
+    @media (max-width: 768px) { .footer-top { grid-template-columns: 1fr; gap: 2rem; } }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#hero" class="nav-logo">Apex<span>Capital</span></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#why">Why Us</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#testimonials">Testimonials</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#enquiry" class="btn btn-primary">Get Started</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <span class="section-label">Investment Strategy Consultancy</span>
+    <h1>Build a Smarter Investment Strategy for <span>Long-Term Wealth Growth</span></h1>
+    <p>Personalized investment planning, portfolio diversification, and risk management strategies designed to help you achieve your financial goals.</p>
+    <div class="hero-cta">
+      <a href="#enquiry" class="btn btn-primary">Get Your Free Investment Strategy Checklist</a>
+      <a href="#enquiry" class="btn btn-secondary">Schedule a Consultation</a>
+    </div>
+    <div class="trust-badges">
+      <span class="badge">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Risk-Managed Approach
+      </span>
+      <span class="badge">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Data-Driven Strategy
+      </span>
+      <span class="badge">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        Long-Term Growth Focus
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- WHY CHOOSE US -->
+<section id="why">
+  <div class="container">
+    <div class="section-heading animate">
+      <span class="section-label">Why Choose Us</span>
+      <h2>Everything You Need to Grow Your Wealth</h2>
+      <p>A comprehensive suite of investment services tailored to your unique financial situation and goals.</p>
+    </div>
+    <div class="cards-grid">
+      <div class="card animate">
+        <div class="card-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <h3>Personalized Investment Strategy</h3>
+        <p>Customized plans aligned with your financial goals, time horizon, and risk appetite.</p>
+      </div>
+      <div class="card animate">
+        <div class="card-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <h3>Portfolio Diversification</h3>
+        <p>Reduce risk through balanced asset allocation across multiple sectors and geographies.</p>
+      </div>
+      <div class="card animate">
+        <div class="card-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>Risk Management</h3>
+        <p>Protect your capital during uncertain market conditions with proven risk mitigation techniques.</p>
+      </div>
+      <div class="card animate">
+        <div class="card-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        </div>
+        <h3>Long-Term Growth</h3>
+        <p>Focus on sustainable wealth creation through disciplined, evidence-based investment principles.</p>
+      </div>
+      <div class="card animate">
+        <div class="card-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        </div>
+        <h3>Market Insights</h3>
+        <p>Regular portfolio reviews and investment optimisation based on current market conditions.</p>
+      </div>
+      <div class="card animate">
+        <div class="card-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <h3>Professional Guidance</h3>
+        <p>Structured investment decision-making support from experienced financial strategists.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INVESTMENT PROCESS -->
+<section id="process">
+  <div class="container">
+    <div class="section-heading animate">
+      <span class="section-label">Our Process</span>
+      <h2>Your Path to Financial Success</h2>
+      <p>A structured four-step approach designed to build and protect your wealth over time.</p>
+    </div>
+    <div class="timeline">
+      <div class="timeline-step animate">
+        <div class="step-num">1</div>
+        <div>
+          <h3>Financial Goals Assessment</h3>
+          <p>We understand your current position, future objectives, and lifestyle aspirations to set a clear direction.</p>
+        </div>
+      </div>
+      <div class="timeline-step animate">
+        <div class="step-num">2</div>
+        <div>
+          <h3>Risk Profile Evaluation</h3>
+          <p>We assess your risk tolerance and capacity to define an investment approach aligned with your comfort level.</p>
+        </div>
+      </div>
+      <div class="timeline-step animate">
+        <div class="step-num">3</div>
+        <div>
+          <h3>Investment Strategy Development</h3>
+          <p>We build a personalised, diversified investment plan with clear asset allocation and implementation guidelines.</p>
+        </div>
+      </div>
+      <div class="timeline-step animate">
+        <div class="step-num">4</div>
+        <div>
+          <h3>Portfolio Monitoring and Review</h3>
+          <p>Ongoing performance tracking, quarterly reviews, and strategy adjustments as your life and markets evolve.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="container">
+    <div class="section-heading animate">
+      <span class="section-label">Client Success Stories</span>
+      <h2>What Our Clients Say</h2>
+      <p>Real results from investors who trusted us with their financial futures.</p>
+    </div>
+    <div class="testimonials-grid">
+      <div class="t-card animate">
+        <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <blockquote>"The investment framework provided a clear roadmap for achieving my financial goals. I now have complete confidence in my portfolio strategy."</blockquote>
+        <div class="t-author">
+          <div class="avatar">MT</div>
+          <div>
+            <strong>Michael Tan</strong>
+            <span>Business Owner</span>
+          </div>
+        </div>
+      </div>
+      <div class="t-card animate">
+        <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <blockquote>"The strategy helped me diversify my portfolio and manage risk more effectively. My returns have consistently outperformed my previous approach."</blockquote>
+        <div class="t-author">
+          <div class="avatar" style="background:#3B82F6">SL</div>
+          <div>
+            <strong>Sarah Lim</strong>
+            <span>Senior Executive</span>
+          </div>
+        </div>
+      </div>
+      <div class="t-card animate">
+        <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <blockquote>"Professional guidance and practical recommendations that I could implement immediately. The consultation was worth every minute."</blockquote>
+        <div class="t-author">
+          <div class="avatar" style="background:var(--accent)">DW</div>
+          <div>
+            <strong>David Wong</strong>
+            <span>Professional Investor</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LEAD MAGNET -->
+<section id="lead-magnet">
+  <div class="container">
+    <div class="lm-inner">
+      <div class="lm-content animate">
+        <span class="section-label" style="color:var(--accent)">Free Resource</span>
+        <h2>Free Investment Strategy Checklist</h2>
+        <p>Download our comprehensive investment planning checklist and discover the exact framework our advisors use with high-net-worth clients.</p>
+        <ul class="checklist">
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Investment goal setting framework</li>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Portfolio diversification principles</li>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Common investor mistakes to avoid</li>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Risk management strategies</li>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Long-term wealth planning techniques</li>
+        </ul>
+        <a href="#enquiry" class="btn btn-accent">Download Free Checklist</a>
+      </div>
+      <div class="lm-visual animate">
+        <div class="lm-icon">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        </div>
+        <div class="value-tag">FREE &mdash; Valued at $97</div>
+        <h3>Investment Strategy Checklist</h3>
+        <p>A comprehensive 25-point checklist used by professional investors to build and protect long-term wealth.</p>
+        <a href="#enquiry" class="btn btn-primary">Get Instant Access</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ENQUIRY FORM -->
+<section id="enquiry">
+  <div class="container">
+    <div class="section-heading animate">
+      <span class="section-label">Free Consultation</span>
+      <h2>Request Your Free Investment Strategy Consultation</h2>
+      <p>Complete the form and one of our advisors will contact you within one business day.</p>
+    </div>
+    <div class="form-wrap animate">
+      <div class="form-msg" id="formMsg"></div>
+      <form id="enquiryForm" action="https://formsubmit.co/verwertung777@gmail.com" method="POST" novalidate>
+        <input type="hidden" name="_subject" value="New Investment Strategy Enquiry">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="table">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="fullName">Full Name <span>*</span></label>
+            <input type="text" id="fullName" name="fullName" class="form-control" placeholder="John Smith" autocomplete="name">
+            <span class="field-error" id="nameErr">Please enter your full name.</span>
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address <span>*</span></label>
+            <input type="email" id="email" name="email" class="form-control" placeholder="john@example.com" autocomplete="email">
+            <span class="field-error" id="emailErr">Please enter a valid email address.</span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="phone">Phone Number <span>*</span></label>
+            <input type="tel" id="phone" name="phone" class="form-control" placeholder="+1 (555) 000-0000" autocomplete="tel">
+            <span class="field-error" id="phoneErr">Please enter your phone number.</span>
+          </div>
+          <div class="form-group">
+            <label for="investGoal">Investment Goal</label>
+            <select id="investGoal" name="investmentGoal" class="form-control">
+              <option value="">Select your goal</option>
+              <option>Wealth Accumulation</option>
+              <option>Retirement Planning</option>
+              <option>Passive Income</option>
+              <option>Capital Preservation</option>
+              <option>Education Planning</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="investAmount">Estimated Investment Amount</label>
+          <select id="investAmount" name="investmentAmount" class="form-control">
+            <option value="">Select investment range</option>
+            <option>Under $50,000</option>
+            <option>$50,000 - $100,000</option>
+            <option>$100,000 - $500,000</option>
+            <option>$500,000 - $1,000,000</option>
+            <option>Above $1,000,000</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" class="form-control" placeholder="Tell us about your investment goals or any questions you have..."></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary submit-btn">Get My Free Consultation</button>
+        <p class="form-note">By submitting you agree to be contacted regarding your enquiry. We respect your privacy and will never share your details.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="container">
+    <div class="section-heading animate">
+      <span class="section-label">Common Questions</span>
+      <h2>Frequently Asked Questions</h2>
+      <p>Everything you need to know before starting your investment journey.</p>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item animate">
+        <button class="faq-btn" aria-expanded="false">
+          What investment strategies do you provide?
+          <span class="faq-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </button>
+        <div class="faq-ans">
+          <p>We provide a full spectrum of investment strategies including long-term wealth accumulation, dividend income portfolios, growth-focused equity strategies, conservative capital preservation approaches, and balanced diversified portfolios. Each strategy is tailored to your individual financial goals, risk tolerance, and investment timeline using global market insights and evidence-based methodologies.</p>
+        </div>
+      </div>
+      <div class="faq-item animate">
+        <button class="faq-btn" aria-expanded="false">
+          Is the consultation free?
+          <span class="faq-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </button>
+        <div class="faq-ans">
+          <p>Yes, the initial strategy consultation is completely free with no obligation. During the session one of our advisors will review your financial situation, discuss your goals, and outline how our services can benefit you. There are no hidden charges for the initial meeting. If you choose to proceed, all fees are clearly outlined before any engagement begins.</p>
+        </div>
+      </div>
+      <div class="faq-item animate">
+        <button class="faq-btn" aria-expanded="false">
+          How do I get started?
+          <span class="faq-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </button>
+        <div class="faq-ans">
+          <p>Simply complete the enquiry form on this page. One of our advisors will reach out within one business day to schedule your free consultation. Before the meeting, we recommend gathering basic details about your current savings, any existing investments, and your financial goals. From enquiry to receiving your first personalised strategy typically takes less than two weeks.</p>
+        </div>
+      </div>
+      <div class="faq-item animate">
+        <button class="faq-btn" aria-expanded="false">
+          What types of investors do you work with?
+          <span class="faq-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </button>
+        <div class="faq-ans">
+          <p>We work with a wide range of investors — from first-time investors building their initial portfolio to experienced professionals optimising complex multi-asset holdings. Our clients include business owners, executives, retirees, and high-net-worth individuals. Whether you are starting with $50,000 or managing assets above $1 million, our team has the tools and experience to develop the right strategy for you.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section id="final-cta">
+  <div class="container animate">
+    <h2>Start Building Your Investment Strategy Today</h2>
+    <p>Take the first step toward achieving your financial goals with a personalised investment strategy consultation.</p>
+    <a href="#enquiry" class="btn btn-accent">Request Free Consultation</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#hero" class="nav-logo">Apex<span>Capital</span></a>
+        <p>A professional investment strategy consultancy dedicated to helping individuals and businesses build long-term, sustainable wealth through disciplined, evidence-based investment frameworks.</p>
+        <div class="social-links">
+          <a href="#" class="social-link" aria-label="LinkedIn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.75)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+          <a href="#" class="social-link" aria-label="Twitter">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.75)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
+          </a>
+          <a href="#" class="social-link" aria-label="Facebook">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.75)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <p><a href="mailto:info@apexcapital.com">info@apexcapital.com</a></p>
+        <p><a href="tel:+18000000000">+1 (800) 000-0000</a></p>
+        <p style="margin-top:.6rem;color:rgba(255,255,255,.35);font-size:.78rem">Mon&ndash;Fri, 9am&ndash;6pm</p>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <p><a href="#why">Portfolio Strategy</a></p>
+        <p><a href="#why">Risk Management</a></p>
+        <p><a href="#why">Wealth Planning</a></p>
+        <p><a href="#enquiry">Free Consultation</a></p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2025 ApexCapital. All rights reserved.</span>
+      <span>Investment Strategy Consultancy</span>
+    </div>
+    <p class="disclaimer">This website is for informational purposes only and does not constitute financial advice. Past performance is not indicative of future results. All investments carry risk, including the possible loss of principal. Please consult a qualified financial professional before making any investment decisions.</p>
+  </div>
+</footer>
+
+<script>
+  // Sticky nav
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 50);
+  }, { passive: true });
+
+  // Hamburger
+  const hamburger = document.getElementById('hamburger');
+  const navLinks  = document.getElementById('navLinks');
+  hamburger.addEventListener('click', () => {
+    const open = hamburger.classList.toggle('open');
+    navLinks.classList.toggle('open', open);
+    hamburger.setAttribute('aria-expanded', String(open));
+  });
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    hamburger.classList.remove('open');
+    navLinks.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', 'false');
+  }));
+
+  // Smooth scroll (offset for sticky nav)
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const id = a.getAttribute('href');
+      const target = document.querySelector(id);
+      if (!target) return;
+      e.preventDefault();
+      const top = target.getBoundingClientRect().top + window.pageYOffset - navbar.offsetHeight - 12;
+      window.scrollTo({ top, behavior: 'smooth' });
+    });
+  });
+
+  // Scroll animations
+  const io = new IntersectionObserver(
+    entries => entries.forEach(en => { if (en.isIntersecting) en.target.classList.add('visible'); }),
+    { threshold: 0.1 }
+  );
+  document.querySelectorAll('.animate').forEach(el => io.observe(el));
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const isOpen = btn.getAttribute('aria-expanded') === 'true';
+      document.querySelectorAll('.faq-btn').forEach(b => {
+        b.setAttribute('aria-expanded', 'false');
+        b.nextElementSibling.classList.remove('open');
+      });
+      if (!isOpen) {
+        btn.setAttribute('aria-expanded', 'true');
+        btn.nextElementSibling.classList.add('open');
+      }
+    });
+  });
+
+  // Form validation
+  const form    = document.getElementById('enquiryForm');
+  const formMsg = document.getElementById('formMsg');
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  function markField(inputId, errId, invalid) {
+    document.getElementById(inputId).classList.toggle('error', invalid);
+    document.getElementById(errId).classList.toggle('show', invalid);
+  }
+
+  ['fullName', 'email', 'phone'].forEach(id => {
+    document.getElementById(id).addEventListener('input', () => {
+      document.getElementById(id).classList.remove('error');
+    });
+  });
+
+  form.addEventListener('submit', e => {
+    const name  = document.getElementById('fullName').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+
+    const nInv = !name;
+    const eInv = !emailRe.test(email);
+    const pInv = !phone;
+
+    markField('fullName', 'nameErr',  nInv);
+    markField('email',    'emailErr', eInv);
+    markField('phone',    'phoneErr', pInv);
+
+    if (nInv || eInv || pInv) {
+      e.preventDefault();
+      formMsg.className   = 'form-msg err';
+      formMsg.textContent = 'Please correct the highlighted fields before submitting.';
+      formMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    formMsg.className   = 'form-msg success';
+    formMsg.textContent = 'Sending your enquiry… you will be redirected shortly.';
+  });
+</script>
+</body>
+</html>

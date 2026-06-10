@@ -21,7 +21,7 @@ xdg-open index.html
 
 Everything lives in `index.html`:
 
-- **`<head>`** — meta/SEO tags, Google Fonts (Inter + Playfair Display), all CSS in one `<style>` block
+- **`<head>`** — meta/SEO tags (title, description, robots, canonical), Open Graph, Twitter Card, JSON-LD structured data (WebSite + FinancialService + FAQPage), Google Fonts (Inter + Playfair Display), all CSS in one `<style>` block
 - **Sections** (in order): Nav → Hero → Why Choose Us → Investment Process → Testimonials → Lead Magnet → Enquiry Form → FAQ → Final CTA → Footer
 - **`<script>`** — sticky nav, hamburger menu, smooth scroll, scroll-in animations (IntersectionObserver), FAQ accordion, form validation, WhatsApp widget
 - **WhatsApp widget** — fixed FAB (bottom-right) that opens a popup with 5 pre-filled query chips linking to `wa.me`

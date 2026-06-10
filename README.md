@@ -23,7 +23,7 @@ Everything lives in `index.html`:
 
 - **`<head>`** — meta/SEO tags (title, description, robots, canonical), Open Graph, Twitter Card, JSON-LD structured data (WebSite + FinancialService + FAQPage), Google Fonts (Inter + Playfair Display), all CSS in one `<style>` block
 - **Sections** (in order): Nav → Hero → Why Choose Us → Investment Process → Testimonials → Lead Magnet → Enquiry Form → FAQ → Final CTA → Footer
-- **`<script>`** — sticky nav, hamburger menu, smooth scroll, scroll-in animations (IntersectionObserver), FAQ accordion, form validation, WhatsApp widget
+- **`<script>`** — sticky nav, hamburger menu, smooth scroll, scroll-in animations (IntersectionObserver), FAQ accordion, form validation + fetch-based submission with a `SpeechSynthesis` voice confirmation post-hook, WhatsApp widget
 - **WhatsApp widget** — fixed FAB (bottom-right) that opens a popup with 5 pre-filled query chips linking to `wa.me`
 
 ## External dependencies

@@ -1,0 +1,30 @@
+# Secrets and credentials — never commit these
+.env
+.env.*
+.env.local
+.env.production
+.env.staging
+*.pem
+*.key
+*.p12
+*.pfx
+*_rsa
+*_dsa
+*_ecdsa
+*_ed25519
+id_rsa*
+credentials.*
+secrets.*
+*.secret
+*.token
+config.secret.*
+
+# OS noise
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+*.swp
+*.swo
+.idea/

@@ -1,6 +1,6 @@
-# Finance Consultancy — Investment Strategy Landing Page
+# ApexCapital — Investment Strategy Consultancy
 
-A single-file static landing page for an investment strategy consultancy. No build step, no bundler, no dependencies — just open `index.html` in a browser.
+A single-file static landing page for ApexCapital, an investment strategy consultancy. No build step, no bundler, no dependencies — just open `index.html` in a browser.
 
 ![Homepage screenshot](screenshot-homepage.png)
 
@@ -23,7 +23,8 @@ Everything lives in `index.html`:
 
 - **`<head>`** — meta/SEO tags, Google Fonts (Inter + Playfair Display), all CSS in one `<style>` block
 - **Sections** (in order): Nav → Hero → Why Choose Us → Investment Process → Testimonials → Lead Magnet → Enquiry Form → FAQ → Final CTA → Footer
-- **`<script>`** — sticky nav, hamburger menu, smooth scroll, scroll-in animations (IntersectionObserver), FAQ accordion, form validation
+- **`<script>`** — sticky nav, hamburger menu, smooth scroll, scroll-in animations (IntersectionObserver), FAQ accordion, form validation, WhatsApp widget
+- **WhatsApp widget** — fixed FAB (bottom-right) that opens a popup with 5 pre-filled query chips linking to `wa.me`
 
 ## External dependencies
 
